@@ -1,13 +1,13 @@
 var http = require("http");
+var url = require("url");
 
 
-function start(){
+function start(route, handle){
     function onRequest(request, response) {
-        console.log("Got a request son!");
+        var pathName = url.parse(request.url).pathname;
+        console.log("Got a request son for: " + pathName);
         
-        response.writeHead(200, {"Content-Type": "text/plain"});
-        response.write("Hello Sucka!!!");
-        response.end();
+        route(handle, pathName, response);
     }
     
     http.createServer(onRequest).listen(process.env.PORT);
