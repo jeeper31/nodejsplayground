@@ -1,20 +1,23 @@
-var exec = require("child_process").exec;
+var fs = require('fs');
 
 function start(response) {
-  console.log("Request handler 'start' was called.");
+    console.log("Request handler 'start' was called.");
   
-  exec("ls -lah", function(error, stdout, stderr){
-    writeContent(response, stdout);
-  });
+    fs.readFile('node/html/index.html', function (err, html) {
+        if (err) {
+            throw err; 
+        }
+        writeContent(response, html);
+    });
 }
 
 function upload(response) {
-  console.log("Request handler 'upload' was called.");
-  writeContent(response, "Upload some shiz sucka!");
+    console.log("Request handler 'upload' was called.");
+    writeContent(response, "Upload some shiz sucka!");
 }
 
 var writeContent = function(response, content){
-    response.writeHead(200, {"Content-Type": "text/plain"});
+    response.writeHead(200, {"Content-Type": "text/html"});
     response.write(content);
     response.end();
 }
